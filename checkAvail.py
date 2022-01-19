@@ -27,3 +27,5 @@ for name in names:
     print ("")
     if website_status[2] > 1.5:
         print ('Угроза ddos')
+# недоступный сайт: https://www.thepythoncode.com/article/extracting-domain-name-information-in-python
+# заюзать whois
