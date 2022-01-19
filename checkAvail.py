@@ -10,7 +10,7 @@ def get_status(url):
     except requests.exceptions.ConnectionError:
          status_code = '000'
          reason = 'Сайт не доступен'
-         response_time = '10 секунд'
+         response_time = 'нет ответа'
     website_status = (status_code, reason,  response_time)
     return website_status
 
