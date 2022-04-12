@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %} 
+<section class="main">
+  <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+    FinDetect
+  </h1>
+  <p class="description" data-aos="fade-up" data-aos-delay="1000">
+    Новейший сервис про анализу, отслеживанию и проверки финансовых сервисов на территории России. 
+  </p>
+</section>
+
+<div class="container">
+  <div class="card-deck mb-3 text-center">
+  {% for element in services %}
+        <div class="card mb-4 shadow-sm" id="note">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{ element.title }}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">info<small class="text-muted"></small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Site available</li>
+              <li>URL:{{ element.url }}</li>
+              <li>{{ element.description }}</li>
+              <li>Access available</li>
+              <li>Information</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary"><a href="/view_service/{{ element.id }}">Подробная информация</a></button>
+          </div>
+        </div>
+  {% endfor %}
+  </div>
+{% endblock %}
+

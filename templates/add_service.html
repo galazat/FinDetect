@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %} 
+
+<section class="main">
+  <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+    Добавление сервиса
+  </h1>
+  <p class="description" data-aos="fade-up" data-aos-delay="1000">
+    Форма добавления нового сервиса. Необходимо заполнить основные поля, отмеченные звёздочкой. 
+    Проверку доступности финансового сервиса можно будет провести позже, средствами платформы. 
+  </p>
+
+  <form class='post-adding' method="post">
+       <input type="text" class="form-control" name="title" id="title" placeholder="Введите название сервиса"><br>
+       <input type="text" class="form-control" name="description" id="description" placeholder="Описание сервис"><br>
+       <input type="text" class="form-control" name="url" id="url" placeholder="URL"><br>
+       <button class="btn btn-success" type="submit">Добавить сервис</button>
+  </form>
+</section>
+
+
+{% endblock %}

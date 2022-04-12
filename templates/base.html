@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinDetect</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/aos.css" />
+    <link rel="stylesheet" href="/css/vidbg.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <img src="img/logo.svg" alt="Logo FinDetect" class="Logo" />
+      <nav class="main-nav">
+        <ul class="list">
+          <li class="item">
+            <a href="#" class="item-link">Доступность</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">Авторизация</a>
+          </li>
+          <li class="item">
+            <a href="http://127.0.0.1:5000/adding" class="item-link">Сторонние сервисы</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">Атака на ресурс</a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav class="secondary-nav">
+        <ul class="list">
+          <li class="item">
+            <a href="#" class="item-link">О проекте</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">О команде</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">Обратная связь</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    
+    {% block MainBlock %} {% endblock %}
+
+    <footer class="footer">
+      <img src="img/logo.svg" alt="logo SpaceX" class="logo" />
+      <nav class="footer-nav">
+        <ul class="list">
+          <li class="item"><a href="#" class="item-link">Twitter</a></li>
+          <li class="item"><a href="#" class="item-link">Youtube</a></li>
+          <li class="item"><a href="#" class="item-link">Instagram</a></li>
+          <li class="item"><a href="#" class="item-link">Flickr</a></li>
+          <li class="item"><a href="#" class="item-link">LinkedIn</a></li>
+          <li class="item"><a href="#" class="item-link">Privacy</a></li>
+          <li class="item"><a href="#" class="item-link">Policy</a></li>
+        </ul>
+      </nav>
+      <p class="footer-text">
+        For additional questions, contact
+        <a class="footer-link" href="mailto: swazat@yandex.ru"
+          >swazat@yandex.ru</a
+        >
+      </p>
+      <a href="#" class="button">Contact us</a>
+    </footer>
+    <script src="js/vidbg.js"></script>
+    <script src="js/rellax.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

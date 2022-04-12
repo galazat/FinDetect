@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %}
+
+<section class="main">
+  <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+    Информация о сервисе
+  </h1>
+  <h2>
+    <br>
+    <br>
+    <br>
+  </h2>
+  <h2 class="view">{{ service.title}}</h2>
+  <p class="view" data-aos="fade-up" data-aos-delay="1000">
+    URL : {{ service.url }}
+    <br>
+    Доступность : {{service.description}}
+  </p>
+
+</section>
+
+
+{% endblock %}
