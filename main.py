@@ -25,48 +25,56 @@ class Service(db.Model):
     description = db.Column(db.Text, nullable=False)
     url = db.Column(db.String(20), nullable=False)
     site_available = db.Column(db.Boolean, default=False)
-    auth_available = db.Column(db.Integer, default=False)
-    mobile_available = db.Column(db.Integer, default=False)
+    available_desc = db.Column(db.Text, default=False)
+    auth_available = db.Column(db.Boolean, default=False)
+    mobile_available = db.Column(db.Boolean, default=False)
+    nmap_decr = db.Column(db.Text, default=False)
+    zabbix_decr = db.Column(db.Text, default=False)
+    social_decr = db.Column(db.Text, default=False)
+    tech_decr = db.Column(db.Text, default=False)
 
     def __repr__(self):
         return f"<id={self.id}, title={self.title}, , url={self.url}>"
 
 
-def get_status(url):
-    try:
-        print('Попытка подключения...')
-        response = requests.head(url, timeout=5)
-        status_code = response.status_code
-        reason = response.reason
-        response_time = response.elapsed.total_seconds()
-    except requests.exceptions.ConnectionError:
-        status_code = '000'
-        reason = 'Сайт не доступен'
-        response_time = '10 секунд'
-    website_status = (status_code, reason, response_time)
-    return website_status
+def get_status():
+    services = Service.query.order_by(Service.id).all()
+    for i in services:
+        try:
+            print('Попытка подключения...')
+            response = requests.head(i.url, timeout=5)
+            status_code = response.status_code
+            reason = response.reason
+            response_time = response.elapsed.total_seconds()
+        except requests.exceptions.ConnectionError:
+            status_code = '000'
+            reason = 'Сайт не доступен'
+            response_time = '10 секунд'
+        website_status = (status_code, reason, response_time)
+
+        Code = website_status[0]
+        Status = website_status[1]
+        ResponseTime = website_status[2]
+        print(i.url)
+        print('Код:', website_status[0], '| Статус:', website_status[1], '| Время ответа:', website_status[2])
+        i.description = (str(Code) + " " + str(Status) + " " + str(ResponseTime))
+        db.session.commit()
+        if (reason == "Сайт не доступен"):
+            i.site_available = 0
+        else:
+            i.site_available = 1
+
+        #test = Service.query.filter_by(id=1).all()
+        # Service.query.filter_by(id=3).delete()
+        # db.session.commit()
+
 
 
 
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id).all()
-    test = Service.query.filter_by(id=1).all()
-    print(test,"-----------")
-    for i in services:
-        website_status = get_status(i.url)
-        Code = website_status[0]
-        Status = website_status[1]
-        ResponseTime = website_status[2]
-        print(i.url)
-        print('Код:', website_status[0], '| Статус:', website_status[1], '| Время ответа:', website_status[2])
-        i.description = (str(Code) + " "+ str(Status) +" " + str(ResponseTime))
-        db.session.commit()
-
-        #Service.query.filter_by(id=3).delete()
-        #db.session.commit()
-
-    print(services)
+    get_status()
     return render_template('index.html', services=services)
 
 
