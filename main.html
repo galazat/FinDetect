@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<h2>Доступность</h2>
+<form method="post" action="/check_site">
+    <input type="text" name="protocol" placeholder="Протокол">
+    <input type="text" name="url" placeholder="url адрес">
+    <input type="text" name="domain" placeholder="домен">
+    <button type="submit">Проверить сайт</button>
+</form>
+<form method="post" action="/clear">
+<button type="submit">Стереть</button>
+</form>
+<h3>Список доступности</h3>
+{% for inform in information %}
+<div> Код: {{ inform.Code }}&nbsp;| Статус: {{ inform.Status }}&nbsp;| Время ответа:{{ inform.ResponseTime }} | Итог:{{ inform.Result }}</div>
+{% endfor %}
+
+</body>
+</html>
