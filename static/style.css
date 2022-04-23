@@ -1,0 +1,298 @@
+body {
+  background-image: linear-gradient(180deg, #eee, #fff 100px, #fff);
+  margin: 53px;
+  font-family: "Roboto", sans-serif;
+}
+
+.header {
+  max-width: 1230px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+}
+
+.item-link {
+  color: #212529;
+  text-decoration: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.secondary-nav .item-link {
+  color: #808080;
+}
+
+.main {
+  text-align: center;
+  padding-top: 150px;
+  padding-bottom: 30px;
+}
+
+.title {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 64px;
+  line-height: 75px;
+  margin-top: 0px;
+  margin-bottom: 23px;
+}
+
+.title-view {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 44px;
+  line-height: 75px;
+  margin-top: 0px;
+  margin-bottom: 23px;
+}
+
+.description {
+  font-style: normal;
+  font-weight: 100;
+  font-size: 16px;
+  line-height: 140%;
+  max-width: 80%;
+  margin: auto;
+}
+
+.description::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 60px;
+  background-color: #ffffff;
+  margin: auto;
+  margin-top: 26px;
+}
+
+.video {
+  height: 750px;
+  max-width: 1230px;
+  width: 90%;
+  margin: auto;
+}
+
+.features {
+  position: relative;
+  max-width: 1230px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 100px 0;
+}
+
+.features-title {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 140%;
+  text-transform: uppercase;
+  margin-bottom: 45px;
+}
+
+.table {
+  margin-bottom: 200px;
+}
+
+.table .table-column {
+  width: 300px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 179.69%;
+}
+
+.features-text {
+  max-width: 700px;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 29px;
+}
+
+.rocket {
+  position: absolute;
+  top: 100px;
+  right: 0;
+  z-index: 99;
+  max-width: 300px;
+}
+
+.footer {
+  padding: 130px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-nav .item-link {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.footer .logo {
+  margin-bottom: 43px;
+}
+
+.footer-nav {
+  margin-bottom: 28px;
+}
+
+.footer-text {
+  font-size: 18px;
+  line-height: 21px;
+  color: #808080;
+  text-decoration: none;
+  margin-bottom: 30px;
+  margin-top: 0px;
+}
+
+.footer-link {
+  font-size: 18px;
+  line-height: 21px;
+  color: #808080;
+  text-decoration: none;
+}
+
+.button {
+  color: #888888;
+  min-width: 260px;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #666666;
+  box-sizing: border-box;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+@media (max-width: 960px) {
+  .rocket {
+    max-width: 230px;
+  }
+  .table-column {
+    width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .header .logo {
+    margin-bottom: 20px;
+  }
+  .header .main-nav {
+    margin-bottom: 20px;
+  }
+  .rocket {
+    max-width: 180px;
+  }
+  .video {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .rocket {
+    position: static;
+    margin-bottom: 30px;
+  }
+  .table {
+    margin-bottom: 0px;
+  }
+  .table-column {
+    font-size: 14px;
+    width: 1500px;
+  }
+  .footer-nav .list {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-nav .item-link {
+    margin-bottom: 10px;
+  }
+  .footer {
+    text-align: center;
+  }
+  .main {
+    padding-top: 50px;
+  }
+  .features {
+    padding-bottom: 0;
+  }
+}
+
+.post-adding {
+  align-items: center;
+  max-width: 80%;
+  margin: auto;
+}
+
+.card {
+  min-width: 350px;
+  height: 320px;
+  max-width: 350px;
+  margin: 60px 20px 20px 100px;
+  display: inline-grid;
+  position: relative;
+}
+
+.view {
+  margin-left: 150px;
+  text-align: left;
+}
+
+img {
+  width: 15%;
+}
+
+.description {
+  font-size: 16px;
+}
+
+.pricing-card-title {
+  font-size: 28px;
+}
+
+.my-0 {
+  font-size: 16px;
+}
+
+
+.card-header {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Status {
+  margin-left: 100px;
+  width: 5%;
+}
+
+.description-other {
+  padding-left: 100px;
+  text-align: left;
+}
+
+.available-link {
+  color: #169c0f;
+}
+
+.notavailable-link {
+  color: #9e1010;
+}
