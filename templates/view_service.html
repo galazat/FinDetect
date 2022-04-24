@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %}
+
+<section class="main">
+  <h1 class="title-view" data-aos="fade-up" data-aos-delay="600">
+    Подробная информация о сервисе 
+  </h1>
+  <h2>
+  </h2>
+</section>
+
+
+<section class="features">
+  <div class="overview">
+    <h2 class="features-title">
+      {{ service.title}} <br />
+    </h2>
+    <p class="features-text">
+      {{ service.description }}
+    </p>
+    <br>
+    <br>
+
+    <h2 class="features-title">
+      Информация о сайте <br />
+    </h2>
+    <table class="table">
+      <tr>
+        <td class="table-column">Тип сервиса </td>
+        <td class="table-column">{{service.short_description}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">URL-адрес сервиса </td>
+        <td class="table-column"><a href="{{ service.url }}">{{ service.url }}</a></td>
+      </tr>
+      <tr>
+        <td class="table-column">Статус веб-сайта</td>
+        <td class="table-column">
+          {% if service.site_available %}
+          <a href="/" class="available-link">доступен</a>
+          {% else %}
+          <a href="/" class="notavailable-link">не доступен</a>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td class="table-column">Код и время ответа веб-сайта</td>
+        <td class="table-column">{{service.available_desc}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">Доменное имя </td>
+        <td class="table-column">{{service.nslookup_decr_1}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">IP-адресс </td>
+        <td class="table-column">{{service.nslookup_decr_2}}</td>
+      </tr>
+    </table>
+
+    <h2 class="features-title">
+      Информация о домене <br />
+    </h2>
+    <table class="table">
+      <tr>
+        <td class="table-column">Состояние </td>
+        <td class="table-column">{{service.whois_decr_1}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">Регистратор </td>
+        <td class="table-column">{{service.whois_decr_2}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">Дата регистрации </td>
+        <td class="table-column">{{service.whois_decr_3}}</td>
+      </tr>
+      <tr>
+        <td class="table-column">Дата окончания регистрации</td>
+        <td class="table-column">{{service.whois_decr_4}}</td>
+      </tr>
+    </table>
+    <br>
+    <h2 class="features-title">
+      Информация о фишигновых доменах <br />
+    </h2>
+    <table class="table">
+    <tr>
+      <td class="table-column-original">{{service.nslookup_decr_1}} </td>
+      <td class="table-column-original">{{service.nslookup_decr_2}}</td>
+      <td class="table-column-original">*original</td>
+    </tr>
+      {% for fishing_ip, fishing_domain  in fishing %}
+      <tr>
+        <td class="table-column-fishing">{{ fishing_domain }} </td>
+        <td class="table-column-fishing">{{ fishing_ip }}</td>
+        <td class="table-column-fishing">*not original</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <img
+      src="./img/heavy.png"
+      alt="rocket"
+      class="rocket"
+      data-rellax-speed="5"
+    />
+  </div>
+
+  <!-- {{ service.social_decr_1 }}
+  {{ service.social_decr_2 }} -->
+
+
+  <!-- {{fishing_domain}} -->
+
+  {% for fishing_ip, fishing_domain  in fishing %}
+  {{ fishing_ip }}{{ fishing_domain }}
+  <br>
+  {% endfor %}
+
+</section>
+
+
+{% endblock %}

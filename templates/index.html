@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %} 
+<section class="main">
+  <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+    FinDetect
+  </h1>
+  <p class="description" data-aos="fade-up" data-aos-delay="1000">
+    - это новейший сервис про анализу, отслеживанию и проверки финансовых сервисов на территории Российской Федерации. Проект разработан студентами Казанского Федерального Университета. 
+  </p>
+</section>
+
+<div class="container">
+  <div class="card-deck mb-3 text-center">
+  {% for element in services %}
+        <div class="card mb-4 shadow-sm" id="note">
+          <div class="card-header">
+            {% if element.site_available %}
+            <h5 class="my-0 font-weight-normal">Статус сервиса</h5>
+            <img src="/static/img/ON.svg" alt="`ON`" class="Status" />
+            {% else %}
+            <h5 class="my-0 font-weight-normal">Статус сервиса</h5>
+            <img src="/static/img/OFF.svg" alt="`OFF`" class="Status" />
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <h2 class="card-title pricing-card-title">{{ element.title }}<small class="text-muted"></small></h2>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Вид сервиса: {{ element.short_description }}</li>
+              {% if element.site_available %}
+              <li>Сайт сервиса: <a href="/" class="available-link">доступен</a></li>
+              {% else %}
+              <li>Сайт сервиса: <a href="/" class="notavailable-link">не доступен</a></li>
+              {% endif %}
+              <li> URL сервиса: <a href="{{ element.url }}">{{ element.url }}</a></li>
+              <li></li>
+              <li>Information</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary"><a href="/view_service/{{ element.id }}">Подробная информация</a></button>
+          </div>
+        </div>
+  {% endfor %}
+  </div>
+{% endblock %}
+
