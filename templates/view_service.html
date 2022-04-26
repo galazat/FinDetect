@@ -16,6 +16,10 @@
     <h2 class="features-title">
       {{ service.title}} <br />
     </h2>
+    <button type="button" class="btn btn-lg btn-block btn-outline-primary" style="width: 500px;"><a href="/telegram/{{ service.id }}">Поиск по каналам телеграм</a></button>
+    <br>
+    <button type="button" class="btn btn-lg btn-block btn-outline-primary" style="width: 500px;"><a href="/nmap_search/{{ service.id }}">Сканирование на открытые порты</a></button>
+    <br>
     <p class="features-text">
       {{ service.description }}
     </p>
@@ -80,6 +84,7 @@
       </tr>
     </table>
     <br>
+    <div class="content_block hide">
     <h2 class="features-title">
       Информация о фишигновых доменах <br />
     </h2>
@@ -97,13 +102,15 @@
       </tr>
       {% endfor %}
     </table>
+  </div>
+    <a class="content_toggle" href="#">Подробнее</a>
 
-    <img
+    <!-- <img
       src="./img/heavy.png"
       alt="rocket"
       class="rocket"
       data-rellax-speed="5"
-    />
+    /> -->
   </div>
 
   <!-- {{ service.social_decr_1 }}
@@ -119,5 +126,20 @@
 
 </section>
 
+
+<script src="/static/jquery.js"></script>
+<script>
+$(document).ready(function(){
+	$('.content_toggle').click(function(){
+		$('.content_block').toggleClass('hide');	
+		if ($('.content_block').hasClass('hide')) {
+			$('.content_toggle').html('Подробнее');
+		} else {
+			$('.content_toggle').html('Скрыть');
+		}		
+		return false;
+	});				
+});
+</script>
 
 {% endblock %}

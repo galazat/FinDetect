@@ -8,9 +8,39 @@
   </h1>
 </section>
 <section class="features">
-  <p class="description-other" data-aos="fade-up" data-aos-delay="1000">
+  <div class="overview">
+    <h2 class="features-title">
+      {{ service.title}} <br />
+    </h2>
+    <br>
+    <br>
 
+    
   </p>
+
+  <h2 class="features-title">
+    Информация с телеграм каналов <br />
+  </h2>
+  <table class="table">
+    <tr>
+      <td class="table-column-1">Адрес канала </td>
+      <td class="table-column-1">Сообщение </td>
+      <td class="table-column-1">Время </td>
+      <td class="table-column-1">Сервис </td>
+    </tr>
+    {% for i  in alert_count %}
+    <tr>
+      {% for j  in i %}
+      <td class="table-column">{{j}} </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+
+
+
+
+
 </section>
 
 

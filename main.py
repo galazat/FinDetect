@@ -17,6 +17,7 @@ from telethon.tl.functions.messages import (GetHistoryRequest)
 import dnstwist
 import json
 import threading
+import nmap
 
 import asyncio
 import configparser
@@ -26,6 +27,7 @@ from telethon.tl.functions.messages import (GetHistoryRequest)
 
 from threading import Timer
 import queue
+import random
 
 import telebot
 from telebot import types
@@ -100,14 +102,16 @@ def get_status(id=0):
             i.available_desc = (str(Code) + " " + str(Status) + " " + str(ResponseTime))
             if (reason == "Site not available"):
                 i.site_available = 0
-                i.available_count = 0
+                i.available_count += 1
                 print(i.site_available)
+                print("i.available_count: ", i.available_count)
                 db.session.commit()
             else:
                 i.site_available = 1
-                i.available_count += 1
+                i.available_count = 0
                 print(i.site_available)
                 db.session.commit()
+                print("i.available_count: ", i.available_count)
                 # if (i.available_count == 2):
                 #     get_report()
 
@@ -138,14 +142,16 @@ def get_status(id=0):
             i.available_desc = (str(Code) + " " + str(Status) + " " + str(ResponseTime))
             if (reason == "Site not available"):
                 i.site_available = 0
-                i.available_count = 0
+                i.available_count += 1
                 print(i.site_available)
+                print("i.available_count: ", i.available_count)
                 db.session.commit()
             else:
                 i.site_available = 1
-                i.available_count += 1
+                i.available_count = 0
                 print(i.site_available)
                 db.session.commit()
+                print("i.available_count: ", i.available_count)
 
 
 def get_domain_info(id=0):
@@ -236,7 +242,7 @@ def get_fishing(id=0):
                 j=0
                 while dns[j]:
                     try:
-                        if('172.' in str(dns[j]['dns_a'][0])):
+                        if(('172.' in str(dns[j]['dns_a'][0])) or ("!ServFail" in str(dns[j]['dns_a'][0]))):
                             dns.pop(j)
                             j -=1
                         else:
@@ -280,7 +286,7 @@ def get_fishing(id=0):
                 j=0
                 while dns[j]:
                     try:
-                        if('172.' in str(dns[j]['dns_a'][0])):
+                        if(('172.' in str(dns[j]['dns_a'][0])) or ("!ServFail" in str(dns[j]['dns_a'][0]))):
                             dns.pop(j)
                             j -=1
                         else:
@@ -315,13 +321,26 @@ def get_fishing(id=0):
     print(fishing_domain)
 
 
+def get_report(id):
+    service = Service.query.filter_by(id=id).all()
+    for i in services:
+        create_report(id)
 
+
+checkTelegram = True
+info = []
+
+def change_checkTelegram():
+    global checkTelegram
+    checkTelegram = True
+    print(change_checkTelegram)
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=get_status, trigger="interval", seconds=1800)
+scheduler.add_job(func=get_status, trigger="interval", seconds=(random.randint(120,240)))
 scheduler.add_job(func=get_domain_info, trigger="interval", seconds=86400)
 scheduler.add_job(func=get_fishing, trigger="interval", seconds=86400)
+scheduler.add_job(func=change_checkTelegram, trigger="interval", seconds=900)
 scheduler.start()
 
 
@@ -394,11 +413,19 @@ def error():
 
 
 
+@app.route('/telegram/<int:id>')
+def telegram_search(id):
+    global checkTelegram, info
 
+    #service = Service.query.get(id)
+    titles = []
+    services = Service.query.order_by(Service.id).all()
+    for i in services:
+        titles.append(i.title)
 
-@app.route('/find_in_telegram', methods=['GET'])
-def telegram_search():
-    def telegram_start():
+    def telegram_start(our_service):
+        print(our_service)
+        ALERT_INFORMATION = []
         config = configparser.ConfigParser()
         config.read("config.ini")
 
@@ -416,9 +443,7 @@ def telegram_search():
         client = TelegramClient(username, api_id, api_hash, loop=loop)
 
         async def main(phone):
-            ALERT_COUNT = 0 # количество алертов
-            ALERT_INFO = [] # на какие банки пришлись алерты
-            ALERT_MESSAGE = []
+
             await client.start()
             print("Client Created")
             # Ensure you're authorized
@@ -431,16 +456,16 @@ def telegram_search():
 
             me = await client.get_me()
 
-            #user_input_channel = input('enter entity(telegram URL or entity id):')
+            # user_input_channel = input('enter entity(telegram URL or entity id):')
             file_url = open("tg_url.txt", "r")
             lines = file_url.readlines()
             for entity in lines:
                 my_channel = await client.get_entity(entity)
                 offset_id = 0
-                limit = 5  # максималное число сообщений за 1 раз
+                limit = 25  # максималное число сообщений за 1 раз
                 all_messages = []
                 total_messages = 0
-                total_count_limit = 10  # Сколько ввобще сообщений нужно
+                total_count_limit = 50  # Сколько ввобще сообщений нужно
 
                 while True:
                     print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
@@ -474,42 +499,204 @@ def telegram_search():
                         else:
                             return False
 
+                alert_words = ["сбой", "не работает", "упал", "оффлайн", "офлайн", "не онлайн", "не открывается", "не загружается", "не доступен", "лежит", "отвалилось", "проблемы", "лег", "не отвечает", "нет возможности"]
                 for mes in all_messages:
                     user_message = str(mes[list(mes.keys())[4]]).lower()
-                    file_banks = open("banks.txt", "r", encoding='utf-8')
-                    lines_banks_file = file_banks.readlines()
-                    file_alert_words = open("alert_words.txt", "r", encoding='utf-8')
-                    lines_alert_words_file = file_alert_words.readlines()
-                    for line_bank in lines_banks_file:
-                        for line_alert in lines_alert_words_file:
-                            if use_regex(user_message, str(line_bank[:-1]), str(line_alert[:-1])):
-                                ALERT_COUNT += + 1
-                                ALERT_INFO.append(str(line_bank[:-1]))
-                                ALERT_MESSAGE.append(user_message)
-                                print(ALERT_COUNT)
-                                print(ALERT_INFO)
-                                print(ALERT_MESSAGE)
+                    time_message = str(mes[list(mes.keys())[3]]).lower()
+                    for alert_word in alert_words:
+                        for title in our_service:
+                            if use_regex(user_message, title.lower(), alert_word):
+                                ALERT_INFORMATION.append([entity[:-1], user_message, time_message, title])
+                                print(ALERT_INFORMATION,  alert_word, title,'\n')
         with client:
             client.loop.run_until_complete(main(phone))
+        return ALERT_INFORMATION
+
+    if (checkTelegram):
+        info.clear()
+        print(titles)
+        info = telegram_start(titles)
+        checkTelegram = False
+        print("info update:",info)
+    else:
+        print("info last:",info)
+        pass
+    
+    alertMess = []
+    target = Service.query.get(id)
+    for k in info:
+        print(k,'\n', target.title, k[3])
+        if (target.title == k[3]):
+            alertMess.append(k)
+            print('mess: ',k)
+
+    # return render_template('telegram.html', service=service, fishing=zip(), alert_message=0)
+    return render_template('telegram.html', service=target, alert_count=alertMess)
 
 
-    telegram_start()
-    # scheduler.add_job(id='Scheduled Task', func=telegram_start, trigger="interval", seconds=30)
-    # scheduler.start()
-    return render_template('telegram.html')
 
 
-@app.route('/telegram', methods=['GET'])
-def telegram():
-    return render_template('telegram.html')
+@app.route('/nmap_search/<int:id>')
+def nmap_search(id):
+    service = Service.query.get(id)
+    # nmap_path = [r"C:\Program Files (x86)\Nmap\nmap.exe", ]  # Необходимо скачать nmap для корректной работы
+    # scanner = nmap.PortScanner(nmap_search_path=nmap_path)
+    scanner = nmap.PortScanner()
 
+    def nmap_ping_scan(ip_addr, mask):
+        hosts = list()
+        scanner.scan(hosts=ip_addr + "/" + mask, arguments=' - n - sP - PE - PA21, 23, 80, 3389')
+        hosts_list = [(x, scanner[x]['status']['state']) for x in scanner.all_hosts()]
+        print(hosts_list)
+        for host, status in hosts_list:
+            print('{0}:{1}'.format(host, status))
+            if status == 'up':
+                hosts.append(str(host))
+        return hosts
 
+    def nmap_scan_popular(network_prefix):
+        nmap_information = ""
+        print(network_prefix)
+        nm = nmap.PortScanner()
+        # Настроить параметры сканирования nmap
+        scan_raw_result = nm.scan(hosts=network_prefix, arguments='-v -n -A')
+        print(scan_raw_result)
+        '''ports='1-8080','''  # 3 минуты
+        # Анализировать результаты сканирования
+        for host, result in scan_raw_result['scan'].items():
+            if result['status']['state'] == 'up':
+                nmap_information += '#' * 17 + 'Host:' + host + '#' * 17 + "<br>"
+                for os in result['osmatch']:
+                    nmap_information += "Операционная система:" + os['name'] + ' ' * 3 + "Точность:" + os[
+                        'accuracy'] + "<br>"
+                idno = 1
+                try:
+                    for port in result['tcp']:
+                        try:
+                            nmap_information += '-' * 17 + "Детали TCP - сервера" + '-' * 17 + "<br>"
+                            nmap_information += 'Номер порта TCP:' + str(port) + "<br>"
+                            idno += 1
+                            try:
+                                nmap_information += 'Статус:' + result['tcp'][port]['state'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Метод:' + result['tcp'][port]['reason'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Дополнительная информация:' + result['tcp'][port][
+                                    'extrainfo'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Имя:' + result['tcp'][port]['name'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Версия:' + result['tcp'][port]['version'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Продукт:' + result['tcp'][port]['product'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'CPE：' + result['tcp'][port]['cpe'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += "Скрипт:" + result['tcp'][port]['script'] + "<br>"
+                            except:
+                                pass
+                        except:
+                            pass
+                except:
+                    pass
 
+                idno = 1
+                try:
+                    for port in result['udp']:
+                        try:
+                            nmap_information += '-' * 17 + "Детали сервера UDP" + '-' * 17 + "<br>"
+                            nmap_information += 'Номер порта UDP:' + str(port) + "<br>"
+                            idno += 1
+                            try:
+                                nmap_information += 'Статус:' + result['udp'][port]['state'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Метод:' + result['udp'][port]['reason'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Дополнительная информация:' + result['udp'][port][
+                                    'extrainfo'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Имя:' + result['udp'][port]['name'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Версия:' + result['udp'][port]['version'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'Продукт:' + result['udp'][port]['product'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += 'CPE：' + result['udp'][port]['cpe'] + "<br>"
+                            except:
+                                pass
+                            try:
+                                nmap_information += "Скрипт:" + result['udp'][port]['script'] + "<br>"
+                            except:
+                                pass
+                        except:
+                            pass
+                except:
+                    pass
+        return nmap_information
 
+    def cut_protocol(domain):
+        url = re.compile(r"https?://(\.)?")
+        url = url.sub('', domain).strip().strip('/')
+        return str(url)
+    print("Разрешение адреса: " + str(service.url))
+    full_url = str(service.url)
+    domain_name = cut_protocol(full_url)
 
+    ip_list = []
+    try:
+        ais = socket.getaddrinfo(domain_name, 0, 0, 0, 0)
+        for result in ais:
+            ip_list.append(result[-1][0])
+        ip_list = list(set(ip_list))
+        print('Разрешение выполнилось удачно')
+    except Exception:
+        print('Неудалось рарешить адрес')
 
-# my_thread = threading.Thread(target=start_bot)
-# my_thread.start()
+    print(ip_list)
+
+    ip_addr = ip_list[0]
+    mask = '24'
+    nmap_information_hosts = ""
+    nmap_information = ""
+    # hosts = nmap_ping_scan(ip_addr, mask)
+    # print(hosts)
+    # for host in hosts:
+        # nmap_information_hosts += "<br>" + str(host) + "<br>"
+
+    print("Старт анализа...")
+    nmap_information += nmap_scan_popular(ip_addr)
+    if nmap_information == "":
+        nmap_information = "Популярных открытых портов не найдено"
+    print(nmap_information)
+
+    return render_template('nmap.html', service=service, nmap_information_hosts=nmap_information_hosts, nmap_information=nmap_information)
+
 
 
 if __name__ == '__main__':

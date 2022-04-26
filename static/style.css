@@ -113,6 +113,16 @@ body {
   line-height: 179.69%;
 }
 
+.table-column-1 {
+  width: 300px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 179.69%;
+}
+
 .table-column-fishing {
   width: 200px;
   padding-top: 3px;
@@ -317,4 +327,22 @@ img {
 
 .notavailable-link {
   color: #9e1010;
+}
+
+.content_block {
+	overflow: hidden;
+	position: relative;    
+}
+.content_block.hide {
+	height: 300px;
+}
+.content_block.hide:after{
+	content: "";
+	display: block;
+	height: 100px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 75%)
 }

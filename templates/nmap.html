@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block MainBlock %} 
+
+<section class="main">
+  <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+    Telegram 
+  </h1>
+</section>
+<section class="features">
+  <div class="overview">
+    <h2 class="features-title">
+      {{ service.title}} <br />
+    </h2>
+    <br>
+    <br>
+
+    <section class="nmap">
+        <h1 class="title" data-aos="fade-up" data-aos-delay="600">
+          Сканирование портов (nmap)
+        </h1>
+        <p class="view" data-aos="fade-up" data-aos-delay="1000">
+          <br>
+            {{ nmap_information_hosts | safe }}
+            {{ nmap_information | safe }}
+        </p>
+      </section>
+
+</div>>
+</section>
+
+
+{% endblock %}
