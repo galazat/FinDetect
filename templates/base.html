@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinDetect</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <img src="/static/img/logo.png" alt="FinDetect" class="Logo" />
+      <nav class="main-nav">
+        <ul class="list">
+          <li class="item">
+            <a href="/" class="item-link">Доступность</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">Авторизация</a>
+          </li>
+          <li class="item">
+            <a href="/adding" class="item-link">Добавление нового сервиса</a>
+          </li>
+          <li class="item">
+            <a href="#" class="item-link">Сообщить о сбое ФО</a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav class="secondary-nav">
+        <ul class="list">
+          <li class="item">
+            <a href="/about" class="item-link">О проекте</a>
+          </li>
+          <li class="item">
+            <a href="/team" class="item-link">О команде</a>
+          </li>
+          <li class="item">
+            <a href="/feedback" class="item-link">Обратная связь</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    
+    {% block MainBlock %} {% endblock %}
+
+    <footer class="footer">
+      <img src="/static/img/logo.png" alt="FinDetect" class="logo" />
+      <nav class="footer-nav">
+        <ul class="list">
+          <li class="item"><a href="https://vk.com/kazan_federal_university" class="item-link">VK</a></li>
+          <li class="item"><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" class="item-link">Youtube</a></li>
+          <li class="item"><a href="https://kpfu.ru/" class="item-link">Сайт университета</a></li>
+          <li class="item"><a href="https://t.me/kznuniversity" class="item-link">Telegram</a></li>
+          <li class="item"><a href="/policy" class="item-link">Policy</a></li>
+        </ul>
+      </nav>
+      <p class="footer-text">
+        По дополнительным вопросам обращаться по почте
+        <a class="footer-link" href="mailto: swazat@mail.ru">swazat@mail.ru</a>
+      </p>
+      <a href="https://kpfu.ru/" class="button">Связаться с нами</a>
+    </footer>
+  </body>
+</html>
