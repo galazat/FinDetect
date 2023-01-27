@@ -37,7 +37,7 @@ print( (first_row.title), '\n')
 
 
 # Создаем экземпляр бота
-bot = telebot.TeleBot('5360323055:AAEMToeoFLN-OeWPF4RDmK8rkRy9y17bAuU')
+bot = telebot.TeleBot('')
 
 # Функция, обрабатывающая команду /start
 @bot.message_handler(commands=["start"])
